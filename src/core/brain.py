@@ -119,7 +119,7 @@ def procesar_mensaje(usuario_nombre, mensaje_usuario):
      #Caso A.3: Guardar la nueva clave en la Base de datos
 
      case _ if "recuperar clave" in msg:
-               palabras = msg.split()
+               palabras = mensaje_usuario.split()
 
                #Esperamos 3 palabras: "recuperar", "clave" y "la_nueva_clave"
 
@@ -135,13 +135,15 @@ def procesar_mensaje(usuario_nombre, mensaje_usuario):
                          db_handler.actualizar_clave(usuario_nombre, clave_nueva)
 
                          return """
-                     <b>¡Clave restablecida con éxito!</b><br><br>
-                     Tu nueva contraseña ha sido guardada de forma segura en nuestro sistema.<br>
-                     Ya puedes utilizarla en tu próximo inicio de sesión.<br><br>
-                     Escribe <b>'Menu'</b> para volver a las opciones principales.
-                     """
+                         <b>¡Clave restablecida con éxito!</b><br><br>
+                         Tu nueva contraseña ha sido guardada de forma segura en nuestro sistema.<br>
+                         Ya puedes utilizarla en tu próximo inicio de sesión.<br><br>
+                         Escribe <b>'Menu'</b> para volver a las opciones principales.
+                         """
+                     else:
+                         return f"La clave no es segura: {error}"
                else:
-                    return f"La clave no es segura: {error}"
+                     return "Formato incorrecto. Escribe <b>Recuperar clave [nueva_clave]</b>"
 
     #B. Cambiar clave
      case _ if "cambiar clave" in msg:
