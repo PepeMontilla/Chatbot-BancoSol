@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Banco Sol — Acceso</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --brand: #E56A00;
+            --brand-600: #D35400;
+            --brand-700: #C34B00;
+            --brand-300: #FFA55E;
+            --bg: #f5f7fb;
+            --bg-2: #eef2f9;
+            --card: #ffffff;
+            --text: #1b1d22;
+            --muted: #6b7280;
+            --ring: 0 0 0 3px rgba(229, 106, 0, .18);
+            --shadow-lg: 0 15px 40px rgba(31, 41, 55, .15);
+            --radius: 16px;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            font-family: "poppins", sans-serif;
+            background:
+                radial-gradient(1200px 600px at 80% -10%, rgba(255, 170, 92, .12), transparent 60%),
+                radial-gradient(800px 400px at -10% 100%, rgba(255, 140, 66, .10), transparent 60%),
+                linear-gradient(180deg, var(--bg), var(--bg-2));
+            display: grid;
+            place-items: center;
+            color: var(--text);
+        }
+
+
+        h1,
+        h2,
+        h3,
+        .title {
+            font-family: "Merriweather", serif;
+            font-weight: 900;
+            letter-spacing: 0.3px;
+            font-size: 20px;
+        }
+
+
+        .login-card {
+            width: min(400px, 92vw);
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            padding: clamp(20px, 4vw, 32px);
+            border: 1px solid rgba(17, 24, 39, .06);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: .25rem;
+        }
+
+        .brand .logo {
+            width: 36px;
+            height: 36px;
+            display: grid;
+            place-items: center;
+            border-radius: 999px;
+            color: white;
+            background: linear-gradient(135deg, var(--brand), var(--brand-700));
+            box-shadow: 0 8px 20px rgba(229, 106, 0, .28);
+            font-size: 18px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.35rem;
+            color: var(--brand-600)
+        }
+
+        .subtitle {
+            margin: .25rem 0 1.25rem;
+            color: var(--muted)
+        }
+
+        .flash {
+            margin-bottom: .75rem;
+            font-size: .9rem;
+            padding: .65rem .75rem;
+            border-radius: 10px;
+            background: #fff2e9;
+            color: #6e2f00;
+            border: 1px solid #ffd7b8
+        }
+
+        .field {
+            margin-bottom: .9rem
+        }
+
+        label {
+            display: block;
+            font-size: .9rem;
+            margin: 0 0 .35rem .25rem;
+            color: var(--muted)
+        }
+
+        .control {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            background: transparent;
+            /* sin fondo */
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 12px 14px;
+            transition: border .2s, box-shadow .2s,
+        }
+
+        .control:focus-within {
+            border-color: var(--brand-600);
+            box-shadow: var(--ring);
+            background: transparent;
+        }
+
+        .control input {
+            all: unset;
+            flex: 1;
+            font-size: 15px;
+            color: var(--text);
+            background: transparent;
+        }
+
+        .control input::placeholder {
+            color: rgba(27, 29, 34, 0.55);
+        }
+
+        .control .icon {
+            opacity: .7
+        }
+
+        .btn {
+            display: inline-flex;
+            gap: .5rem;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            background: linear-gradient(180deg, var(--brand), var(--brand-600));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-weight: 600;
+            letter-spacing: .2px;
+            cursor: pointer;
+            transition: transform .06s ease, filter .2s ease;
+            box-shadow: 0 10px 20px rgba(229, 106, 0, .25);
+            margin-top: .25rem;
+        }
+
+        .btn:hover {
+            filter: brightness(1.05)
+        }
+
+        .btn:active {
+            transform: translateY(1px)
+        }
+
+        .help-text {
+            font-size: .85rem;
+            color: var(--muted);
+            text-align: center;
+            margin: 10px 0 0
+        }
+
+        .register-link {
+            display: block;
+            text-align: center;
+            margin-top: 14px;
+            color: #374151
+        }
+
+        .register-link b {
+            color: var(--brand-600)
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        a:focus-visible {
+            outline: none;
+            box-shadow: var(--ring);
+            border-radius: 8px
+        }
+
+        /* --- Chat flotante (claro fijo) --- */
+        .fab-btn {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            width: 60px;
+            height: 60px;
+            border: none;
+            border-radius: 999px;
+            background: linear-gradient(135deg, var(--brand-300), var(--brand));
+            color: #fff;
+            font-size: 26px;
+            display: grid;
+            place-items: center;
+            box-shadow: 0 12px 26px rgba(229, 106, 0, .35);
+            cursor: pointer;
+            transition: transform .15s ease, filter .2s ease;
+            z-index: 1000;
+        }
+
+        .fab-btn:hover {
+            filter: brightness(1.07)
+        }
+
+        .fab-btn:active {
+            transform: translateY(1px)
+        }
+
+        .chat-widget {
+            position: fixed;
+            right: 22px;
+            bottom: 96px;
+            width: 340px;
+            max-width: 92vw;
+            height: 460px;
+            background: #ffffff;
+            color: #111827;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            box-shadow: var(--shadow-lg);
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            transform-origin: bottom right;
+            transform: scale(.98) translateY(8px);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform .22s ease, opacity .22s ease;
+            overflow: hidden;
+            z-index: 1000;
+        }
+
+        .chat-widget.open {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .chat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 12px 14px;
+            background: linear-gradient(180deg, var(--brand), var(--brand-700));
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .chat-header .title {
+            display: flex;
+            align-items: center;
+            gap: 8px
+        }
+
+        .chat-header .avatar {
+            width: 26px;
+            height: 26px;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            background: rgba(255, 255, 255, .18)
+        }
+
+        .close-chat {
+            cursor: pointer;
+            opacity: .95;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: grid;
+            place-items: center;
+            background: transparent;
+            border: none;
+            padding: 0;
+            line-height: 0;
+            transition: transform .08s ease, opacity .08s ease;
+            color: rgba(0, 0, 0, 0.95);
+        }
+
+        .close-chat:hover {
+            transform: translateY(-1px)
+        }
+
+        .close-chat:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(211, 84, 0, .12);
+            border-radius: 8px
+        }
+
+        .chat-body {
+            background: #f8fafc;
+            padding: 12px;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: .95rem;
+        }
+
+        .msg-sol {
+            align-self: flex-start;
+            max-width: 80%;
+            background: #eef2f7;
+            color: #111827;
+            padding: 10px 12px;
+            border-radius: 14px 14px 14px 4px;
+        }
+
+        .msg-user {
+            align-self: flex-end;
+            max-width: 80%;
+            background: linear-gradient(135deg, var(--brand-300), var(--brand));
+            color: white;
+            padding: 10px 12px;
+            border-radius: 14px 14px 4px 14px;
+        }
+
+        .typing {
+            opacity: .75;
+            font-size: .9rem
+        }
+
+        .chat-footer {
+            display: flex;
+            gap: 8px;
+            padding: 10px;
+            border-top: 1px solid #e5e7eb;
+            background: #ffffff
+        }
+
+        .chat-input {
+            flex: 1;
+            border: none;
+            border-radius: 999px;
+            padding: 10px 14px;
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        .send-btn {
+            border: none;
+            background: transparent;
+            font-size: 1.2rem;
+            cursor: pointer
+        }
+
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0f0f10;
+                --bg-2: #16171a;
+                --card: #1c1d20;
+                --text: #f3f4f6;
+                --muted: #9aa0a6;
+            }
+
+            body {
+                background:
+                    radial-gradient(1200px 600px at 80% -10%, rgba(255, 170, 92, .20), transparent 60%),
+                    radial-gradient(800px 400px at -10% 100%, rgba(255, 140, 66, .18), transparent 60%),
+                    linear-gradient(180deg, var(--bg), var(--bg-2));
+                color: var(--text);
+            }
+
+            .login-card {
+                background: var(--card);
+                border-color: rgba(255, 255, 255, .06);
+            }
+
+            .flash {
+                background: #2a1a10;
+                color: #ffcfad;
+                border-color: #4a2b14
+            }
+
+            .control {
+                background: #2a2c31;
+                border-color: rgba(255, 255, 255, .12);
+            }
+
+            .control:focus-within {
+                background: transparent
+            }
+
+            .control input::placeholder {
+                color: rgba(243, 244, 246, 0.68);
+            }
+
+            .register-link {
+                color: #cbd5e1
+            }
+
+            .chat-widget {
+                background: #1c1d20;
+                color: #f3f4f6;
+                border-color: rgba(255, 255, 255, .08)
+            }
+
+            .chat-body {
+                background: #1f2025
+            }
+
+            .msg-sol {
+                background: #2a2c31;
+                color: #f3f4f6
+            }
+
+            .chat-footer {
+                background: #1c1d20;
+                border-color: rgba(255, 255, 255, .10)
+            }
+
+            .chat-input {
+                background: #2a2c31;
+                color: #f3f4f6
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-card" role="form" aria-labelledby="title">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="flash" role="status">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <div class="brand">
+            <div class="logo" aria-hidden="true">☀️</div>
+            <h1 id="title">Banco Sol</h1>
+        </div>
+        <p class="subtitle">Bienvenido</p>
+
+        <form action="/" method="POST">
+            <div class="field">
+                <label for="usuario_login">Nombre de usuario</label>
+                <div class="control">
+                    <span class="icon" aria-hidden="true">👤</span>
+                    <input id="usuario_login" name="usuario_login" type="text" autocomplete="username" required />
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="clave">Contraseña</label>
+                <div class="control">
+                    <span class="icon" aria-hidden="true">🔒</span>
+                    <input id="clave" name="clave" type="password" autocomplete="current-password" required />
+                </div>
+            </div>
+
+            <button class="btn" type="submit">Ingresar</button>
+
+            <p class="help-text">
+                ¿Olvidaste tu usuario o clave? <br />
+                Habla con <b>Sol</b> dando clic al boton de abajo a la derecha. ☀️
+            </p>
+        </form>
+
+        <a href="/registro" class="register-link">¿No tienes cuenta? <b>Regístrate aquí</b></a>
+    </div>
+
+    <!-- Botón flotante -->
+    <button class="fab-btn" id="fab" aria-label="Abrir chat de soporte" onclick="toggleChat()">☀️</button>
+
+    <!-- Chat flotante -->
+    <section class="chat-widget" id="chatWidget" role="dialog" aria-labelledby="chatTitle" aria-modal="false">
+        <header class="chat-header">
+            <div class="title">
+                <div class="avatar">☀️</div><span id="chatTitle">Soporte Sol</span>
+            </div>
+            <button class="close-chat" onclick="toggleChat()" aria-label="Cerrar chat">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true">
+                    <path d="M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <path d="M6 18L18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+        </header>
+
+        <div class="chat-body" id="chatBody">
+            <div class="msg-sol">¡Hola! Soy Sol. 👋 <br>Si olvidaste tu clave, o quieres cambiarla dime tu cédula y te ayudaré.</div>
+        </div>
+
+        <footer class="chat-footer">
+            <input id="chatInput" class="chat-input" type="text" placeholder="Escribe aquí..."
+                onkeypress="handleEnter(event)" />
+            <button class="send-btn" onclick="sendGuestMessage()" aria-label="Enviar">➤</button>
+        </footer>
+    </section>
+
+    <script>
+        const widget = document.getElementById('chatWidget');
+        const chatBody = document.getElementById('chatBody');
+        const chatInput = document.getElementById('chatInput');
+
+        function toggleChat() { widget.classList.toggle('open'); }
+        function handleEnter(e) { if (e.key === 'Enter') sendGuestMessage(); }
+
+        function addSolMessage(text) {
+            chatBody.insertAdjacentHTML('beforeend', `<div class="msg-sol">${text}</div>`);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function sendGuestMessage() {
+            const text = chatInput.value.trim();
+            if (!text) return;
+
+            // Mostrar mensaje del usuario en pantalla
+            chatBody.insertAdjacentHTML('beforeend', `<div class="msg-user">${text}</div>`);
+            chatInput.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            // Indicador de "escribiendo..."
+            const tempId = 'typing-' + Date.now();
+            chatBody.insertAdjacentHTML('beforeend', `<div id="${tempId}" class="msg-sol typing">Sol está verificando…</div>`);
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            // Petición al servidor
+            fetch('/api/soporte_login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mensaje: text })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById(tempId).remove(); // Quitar el "escribiendo"
+
+                    if (data.status === 'encontrado') {
+                        addSolMessage(`¡Perfecto! Te encontré. Redirigiéndote... ☀️`);
+                        // Redirección automática tras 1.5 segundos
+                        setTimeout(() => {
+                            window.location.href = data.url;
+                        }, 1500);
+                    } else {
+                        addSolMessage(data.mensaje);
+                    }
+                })
+                .catch(() => {
+                    document.getElementById(tempId).remove();
+                    addSolMessage("Lo siento, tuve un problema al conectar con el banco.");
+                });
+        }
+    </script>
+</body>
+
+</html>

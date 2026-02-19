@@ -1,0 +1,13 @@
+# Ignorar base de datos local (Tus usuarios no se subirán, es más seguro)
+*.db
+*.sqlite3
+
+# Ignorar archivos compilados de Python
+__pycache__/
+*.pyc
+
+# Ignorar entorno virtual
+venv/
+env/
+.env
+.venv/ 

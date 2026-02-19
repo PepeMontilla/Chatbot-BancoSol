@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Asistente Sol ☀️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand: #E56A00;
+            --brand-600: #D35400;
+            --brand-700: #C34B00;
+            --brand-300: #FFA55E;
+            /* BASE (modo claro fijo) */
+            --bg: #f5f7fb;
+            --panel: #ffffff;
+            --panel-2: #f3f5fa;
+            --muted: #6b7280;
+            --ring: 0 0 0 3px rgba(229, 106, 0, .18);
+            --shadow-lg: 0 15px 40px rgba(31, 41, 55, .15);
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            background: linear-gradient(180deg, #f6f8fc, #eef2f9);
+            color: #111827;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Arial;
+            display: grid;
+            place-items: stretch;
+        }
+
+
+        h1,
+        h2,
+        h3,
+        .title {
+            font-family: "Poppins", sans-serif;
+            font-weight: 700;
+            /* 600 o 700 según gusto */
+            letter-spacing: 0.3px;
+        }
+
+        .subtitle {
+            font-family: "Poppins", sans-serif;
+            font-weight: 400;
+            letter-spacing: 0.2px;
+        }
+
+
+        .chat-container {
+            width: min(880px, 100%);
+            margin-inline: auto;
+            height: 100dvh;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            background: var(--panel);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 18px;
+            background: linear-gradient(180deg, var(--brand), var(--brand-700));
+            color: #fff;
+            font-weight: 700;
+            box-shadow: 0 6px 14px rgba(229, 106, 0, .25);
+        }
+
+        .header .avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            display: grid;
+            place-items: center;
+            background: rgba(255, 255, 255, .18)
+        }
+
+        .header .title {
+            display: flex;
+            gap: 8px;
+            align-items: center
+        }
+
+        .header small {
+            font-weight: 500;
+            opacity: .95
+        }
+
+        .messages {
+            padding: 18px;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: linear-gradient(180deg, var(--panel), var(--panel-2));
+        }
+
+        .msg {
+            max-width: 74%;
+            padding: 12px 14px;
+            border-radius: 18px;
+            line-height: 1.45
+        }
+
+        .msg-user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, var(--brand-300), var(--brand));
+            color: white;
+            border-bottom-right-radius: 6px
+        }
+
+        .msg-bot {
+            align-self: flex-start;
+            background: #eef2f7;
+            color: #111827;
+            border-bottom-left-radius: 6px
+        }
+
+        .typing {
+            opacity: .8;
+            font-style: italic
+        }
+
+        .input-area {
+            display: flex;
+            gap: 10px;
+            padding: 14px;
+            background: #fff;
+            border-top: 1px solid #e5e7eb;
+            position: sticky;
+            bottom: 0;
+        }
+
+        .input {
+            flex: 1;
+            border: none;
+            border-radius: 999px;
+            padding: 14px 16px;
+            background: #f3f4f6;
+            color: #111827;
+            outline: none;
+            transition: box-shadow .2s ease, background .2s ease;
+        }
+
+        .input:focus {
+            box-shadow: var(--ring);
+            background: #ffffff
+        }
+
+        .send {
+            border: none;
+            border-radius: 999px;
+            padding: 0 16px;
+            background: linear-gradient(180deg, var(--brand), var(--brand-600));
+            color: white;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(229, 106, 0, .25);
+            transition: transform .06s ease, filter .2s ease;
+        }
+
+        .send:hover {
+            filter: brightness(1.05)
+        }
+
+        .send:active {
+            transform: translateY(1px)
+        }
+
+        /* ====== MODO OSCURO AUTOMÁTICO ====== */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0f0f10;
+                --panel: #1a1b1f;
+                --panel-2: #141519;
+                --muted: #9aa0a6;
+            }
+
+            body {
+                background: linear-gradient(180deg, #0b0c0e, #121316);
+                color: #000000;
+            }
+
+            .chat-container {
+                background: var(--panel)
+            }
+
+            .messages {
+                background: linear-gradient(180deg, var(--panel), var(--panel-2))
+            }
+
+            .msg-bot {
+                background: #2a2c31;
+                color: #eef2f6
+            }
+
+            .input-area {
+                background: #1c1d20;
+                border-color: rgba(255, 255, 255, .10)
+            }
+
+            .input {
+                background: #2a2c31;
+                color: #000000
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="chat-container">
+        <header class="header">
+            <div class="avatar">☀️</div>
+            <div class="title">Asistente Sol <small>• en línea</small></div>
+        </header>
+
+        <main class="messages" id="chatBox" aria-live="polite" aria-busy="false">
+            <div class="msg msg-bot">Hola <b>{{ nombre }}</b>. Escribe "Menu" para comenzar.</div>
+        </main>
+
+        <footer class="input-area">
+            <input id="userInput" class="input" type="text" placeholder="Escribe aquí..." autocomplete="off" />
+            <button class="send" onclick="enviar()">➤</button>
+        </footer>
+    </div>
+
+    <script>
+        const chatBox = document.getElementById('chatBox');
+        const input = document.getElementById('userInput');
+
+        function scrollBottom() { chatBox.scrollTop = chatBox.scrollHeight; }
+
+        function addUser(text) {
+            chatBox.insertAdjacentHTML('beforeend', `<div class="msg msg-user">${text}</div>`);
+            scrollBottom();
+        }
+        function addBot(html) {
+            chatBox.insertAdjacentHTML('beforeend', `<div class="msg msg-bot">${html}</div>`);
+            scrollBottom();
+        }
+        function typingStart() {
+            const id = 't-' + Date.now();
+            chatBox.insertAdjacentHTML('beforeend', `<div id="${id}" class="msg msg-bot typing">Sol está escribiendo…</div>`);
+            scrollBottom();
+            return id;
+        }
+        function typingStop(id) { const el = document.getElementById(id); if (el) el.remove(); }
+
+        function enviar() {
+            const texto = input.value.trim();
+            if (!texto) return;
+            addUser(texto);
+            input.value = '';
+
+            const T = typingStart();
+            fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mensaje: texto, usuario: "{{ nombre }}" })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    typingStop(T);
+                    addBot(data.respuesta);
+                })
+                .catch(() => {
+                    typingStop(T);
+                    addBot('Lo siento, hubo un problema de conexión. Inténtalo de nuevo.');
+                });
+        }
+
+        input.addEventListener('keypress', (e) => { if (e.key === 'Enter') enviar(); });
+    </script>
+
+</body>
+
+</html>
