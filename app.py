@@ -32,15 +32,12 @@ def soporte_login():
     # Limpiamos el texto que envía el usuario (por si pone espacios)
     texto_recibido = data.get('mensaje', '').strip()
 
-    # Buscamos en la DB. 
-    # IMPORTANTE: Asegúrate de que db_handler tenga esta función
+    # Buscamos en la DB. n
     usuario_encontrado = db_handler.buscar_por_cedula(texto_recibido)
 
     if usuario_encontrado:
         # usuario_encontrado[1] suele ser el NOMBRE en tu estructura
         nombre_usuario = usuario_encontrado[1]
-        # Devolvemos la URL a la que el frontend debe redirigir
-        # Debe ser asi:
         return jsonify({
             'status': 'encontrado',
             'url': url_for('chat', nombre=nombre_usuario)
@@ -56,6 +53,7 @@ def chat(nombre):
     return render_template('chat.html', nombre=nombre)
 
 # 2. RUTA REGISTRO 
+# 2. RUTA REGISTRO 
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
     if request.method == 'POST':
@@ -68,47 +66,49 @@ def registro():
         email = request.form['email']
         clave = request.form['clave']
 
-        # 1. Armamos el texto completo para tu validador (Ej: "V-12345678")
+        # 1. Armamos el texto completo para tu validador
         texto_a_validar = f"{tipo}-{cedula_num}"
 
-        # 2. Usamos la funcion "validar_identificador" de mi archivo auth.py
-        # La función devuelve 4 cosas: (valido, tipo_limpio, numero_limpio, mensaje)
+        # 2. Validamos el identificador
         es_valido, tipo_detectado, numero_detectado, mensaje_error = auth.validar_identificador(texto_a_validar)
 
         if not es_valido:
-            flash(mensaje_error) # Aquí se muestra el mensaje de error ("Error! la cedula debe tener...")
-            return redirect(url_for('registro'))
+            flash(mensaje_error) 
+            # 💡 TRUCO: Volvemos a renderizar la página enviando los datos previos
+            return render_template('registro.html', datos=request.form)
 
-        # 3. Si pasa la prueba, reconstruimos el documento final
+        # 3. Reconstruimos el documento final
         documento_final = f"{tipo_detectado}-{numero_detectado}"
 
-        #Aqui van el resto de validaciones (Teléfono, Email, Clave) ---
+        # Validaciones restantes
         valido_tlf, msg_tlf = auth.validar_telefono(telefono)
         if not valido_tlf:
             flash(msg_tlf)
-            return redirect(url_for('registro'))
+            return render_template('registro.html', datos=request.form)
 
         valido_mail, msg_mail = auth.validar_email(email)
         if not valido_mail:
             flash(msg_mail)
-            return redirect(url_for('registro'))
+            return render_template('registro.html', datos=request.form)
             
         valido_clave, msg_clave = auth.validar_clave(clave)
         if not valido_clave:
             flash(msg_clave)
-            return redirect(url_for('registro'))
+            return render_template('registro.html', datos=request.form)
 
-        # 4. Aqui se guarda en la base de datos
+        # 4. Guardado en base de datos
         if db_handler.registrar_usuario(usuario, nombre, documento_final, tipo, telefono, email, clave):
             flash("¡Registro exitoso! Ahora inicia sesión con tu USUARIO.")
+            # Aquí SÍ usamos redirect porque el registro fue un éxito y lo mandamos al login
             return redirect(url_for('login'))
         else:
-            flash("Error: Esa Usuario ya está registrada.")
+            flash("Error: Ese Usuario ya está registrado.")
+            return render_template('registro.html', datos=request.form)
 
-    return render_template('registro.html')
+    # Si entra por GET (la primera vez que abre la página), enviamos 'datos' vacío
+    return render_template('registro.html', datos={})
 
 # 3. RUTA DASHBOARD
-# 3. RUTA DASHBOARD (DESPUES)
 @app.route('/dashboard/<nombre>')
 def dashboard(nombre):
     return render_template('dashboard.html', nombre = nombre)

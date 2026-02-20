@@ -28,22 +28,8 @@ def enviar_codigo_recuperacion(destinatario, codigo):
         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as servidor:
             servidor.login(REMITENTE, CLAVE_APP)
             servidor.send_message(msg)
-        
-        # 3. Faltaba avisar que fue un éxito
         return True
     
     except Exception as e:
         print(f"Error critico al enviar correo: {e}")
         return False
-
-
-# 4. Esta zona debe ir PEGADA al borde izquierdo (fuera de la función)
-if __name__ == "__main__":
-    print("Probando envio de correo...")
-    correo_destino = "duqueaaron2006@gmail.com"
-    exito = enviar_codigo_recuperacion(correo_destino, "123456")
-
-    if exito:
-        print("¡Correo enviado exitosamente! Revisa tu bandeja de entrada.")
-    else:
-        print("Falló el envío. Revisa tus credenciales.")

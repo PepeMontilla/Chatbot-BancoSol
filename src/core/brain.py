@@ -8,11 +8,6 @@ from src.core import auth
 memoria_otp = {}
 
 def procesar_mensaje(usuario_nombre, mensaje_usuario):
-    """
-    Aqui esta funcion reemplaza mi menu_consola.py para la web ya que la web no permite
-    input ni print eso es solo para la consola.
-    """
-
     #Aqui normalizamos que el mensaje este todo en minisculas y sin espacios extras.
 
     msg = mensaje_usuario.lower().strip()
@@ -38,8 +33,8 @@ def procesar_mensaje(usuario_nombre, mensaje_usuario):
           return (
                 "<b>=== GESTIÓN DE CLAVES ===</b><br>"
                 "¿Qué deseas hacer?<br><br>"
-                "🔹 Escribe: <b>'Olvide Clave</b></br>"
-                "🔹 Escribe: <b>'Cambiar clave [actual] [nueva]</b>"
+                "🔹 Escribe: <b>'Olvide Clave</b></br>'"
+                "🔹 Escribe: <b>'Cambiar clave [actual] [nueva]</b>'"
             )
     #Caso 3. Menu de usuario   
      case "2" | "perfil" | "usuario":
@@ -80,7 +75,7 @@ def procesar_mensaje(usuario_nombre, mensaje_usuario):
                          #Aqui guardamos el codigo en la memoia del chatbot
                          memoria_otp[usuario_nombre] = codigo_otp
 
-                         #Ocultmos un poco el correo por privacidad (Ej:yese***@gmail.com)
+                         #Ocultmos un poco el correo por temas de privacidad (Ej:moya***@gmail.com)
                          correo_oculto = correo_destino[:4] + "***" + correo_destino[correo_destino.find("@"):]
 
                          return f"""
@@ -112,7 +107,7 @@ def procesar_mensaje(usuario_nombre, mensaje_usuario):
                 <b> Identidad verificada con exito!</b><br><br>
                 Tu codigo de verificacion es correcto. ahora puedes reestablecer tu nueva clave.<br>
                 Como olvidaste tu clave actual, usa este comando especial para hacer el cambio: <br><br>
-                🔹 <b>Recuperar clave [tu_nueva_clave]</b>
+                🔹 <b>'Recuperar clave [tu_nueva_clave]'</b>
                 """
           
 

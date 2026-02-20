@@ -314,7 +314,16 @@
         .link:hover {
             color: #D35400;
         }
-
+        
+        /* ====== CORRECION AUTOCOMPLETADO ====== */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active {
+            -webkit-text-fill-color: var(--text) !important;
+            transition: background-color 5000s ease-in-out 0s;
+        }
+        
         /* ====== MODO OSCURO AUTOMÁTICO ====== */
         @media (prefers-color-scheme: dark) {
             :root {
@@ -390,14 +399,14 @@
                 <div>
                     <label for="usuario">Usuario</label>
                     <div class="control"><span class="icon">👤</span>
-                        <input id="usuario" name="usuario" type="text" placeholder="Ej: moya123" required />
+                        <input id="usuario" name="usuario" type="text" placeholder="Ej: moya123" value="{{ datos.get('usuario', '') }}" required />
                     </div>
                 </div>
 
                 <div>
                     <label for="nombre">Nombre y apellido</label>
                     <div class="control"><span class="icon">🪪</span>
-                        <input id="nombre" name="nombre" type="text" placeholder="Nombre y apellido" required />
+                        <input id="nombre" name="nombre" type="text" placeholder="Nombre y apellido" value="{{ datos.get('nombre', '') }}" required />
                     </div>
                 </div>
 
@@ -408,7 +417,7 @@
                             <div class="custom-select-wrapper">
                                 <button id="tipo" type="button" class="select-trigger" aria-haspopup="listbox"
                                     aria-expanded="false">
-                                    <span class="selected">V</span>
+                                    <span class="selected">{{ datos.get('tipo', 'V') }}</span>
                                     <span class="caret">▾</span>
                                 </button>
                                 <ul class="select-options" role="listbox" aria-labelledby="tipo" tabindex="-1" hidden>
@@ -416,14 +425,14 @@
                                     <li role="option" data-value="E">E</li>
                                     <li role="option" data-value="J">J</li>
                                 </ul>
-                                <input type="hidden" name="tipo" id="tipo_value" value="V" />
+                                <input type="hidden" name="tipo" id="tipo_value" value="{{ datos.get('tipo', 'V') }}" />
                             </div>
                         </div>
                     </div>
                     <div>
                         <label for="cedula">Cédula</label>
                         <div class="control"><span class="icon">-</span>
-                            <input id="cedula" name="cedula" type="number" inputmode="numeric" placeholder="Cédula"
+                            <input id="cedula" name="cedula" type="number" inputmode="numeric" placeholder="Cédula" value="{{ datos.get('cedula', '') }}" 
                                 required />
                         </div>
                     </div>
@@ -489,14 +498,14 @@
             <div>
                 <label for="telefono">Teléfono</label>
                 <div class="control"><span class="icon">📞</span>
-                    <input id="telefono" name="telefono" type="tel" placeholder="0412..." required />
+                    <input id="telefono" name="telefono" type="tel" placeholder="0412..." value="{{ datos.get('telefono', '') }}" required />
                 </div>
             </div>
 
             <div>
                 <label for="email">Correo electrónico</label>
                 <div class="control"><span class="icon">✉️</span>
-                    <input id="email" name="email" type="email" placeholder="tucorreo@dominio.com" required />
+                    <input id="email" name="email" type="email" placeholder="tucorreo@dominio.com" value="{{ datos.get('email', '') }}" required />
                 </div>
             </div>
 
